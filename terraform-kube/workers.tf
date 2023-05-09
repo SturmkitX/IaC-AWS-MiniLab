@@ -39,7 +39,6 @@ resource "aws_network_interface" "kuber-worker-02-nic" {
 resource "aws_instance" "kube-worker-01" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
-  subnet_id     = aws_subnet.kube-subnet-01.id
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-worker-01-nic.id
@@ -57,7 +56,6 @@ resource "aws_instance" "kube-worker-01" {
 resource "aws_instance" "kube-worker-02" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
-  subnet_id     = aws_subnet.kube-subnet-01.id
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-worker-02-nic.id
