@@ -18,6 +18,22 @@ resource "aws_security_group" "kube-worker-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description      = "Kubelet API"
+    from_port        = 10250
+    to_port          = 10250
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "Kube Nodeport Services"
+    from_port        = 30000
+    to_port          = 32767
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -38,7 +54,7 @@ resource "aws_network_interface" "kuber-worker-02-nic" {
 
 resource "aws_instance" "kube-worker-01" {
   ami           = "ami-064087b8d355e9051"
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-worker-01-nic.id
