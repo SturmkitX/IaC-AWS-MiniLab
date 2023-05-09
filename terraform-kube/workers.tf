@@ -61,6 +61,12 @@ resource "aws_instance" "kube-worker-01" {
     device_index          = 0
   }
 
+  root_block_device {
+    delete_on_termination = true
+    volume_type = "gp2"
+    volume_size = 60
+  }
+
   key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
 
   tags = {
@@ -78,6 +84,12 @@ resource "aws_instance" "kube-worker-02" {
   network_interface {
     network_interface_id  = aws_network_interface.kuber-worker-02-nic.id
     device_index          = 0
+  }
+
+  root_block_device {
+    delete_on_termination = true
+    volume_type = "gp2"
+    volume_size = 60
   }
 
   key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
