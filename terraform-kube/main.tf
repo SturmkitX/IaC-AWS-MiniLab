@@ -72,6 +72,19 @@ resource "aws_internet_gateway" "kube-vpc-gw-01" {
   }
 }
 
+resource "aws_route_table" "kube-route-01" {
+  vpc_id = aws_vpc.kube-vpc-01.id
+
+  route {
+    cidr_block = "172.16.50.0/28"
+    gateway_id = aws_internet_gateway.kube-vpc-gw-01.id
+  }
+
+  tags = {
+    Name = "kube-route-table-01"
+  }
+}
+
 resource "aws_instance" "kube-master-01" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
