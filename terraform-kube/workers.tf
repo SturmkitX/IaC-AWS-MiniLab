@@ -13,6 +13,8 @@ resource "aws_security_group" "kube-worker-sg" {
   ingress {
     description      = "Ping"
     protocol         = "icmp"
+    from_port        = 0
+    to_port          = 0
     cidr_blocks      = ["0.0.0.0/0"]
   }
 

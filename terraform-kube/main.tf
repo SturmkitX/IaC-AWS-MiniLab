@@ -46,6 +46,8 @@ resource "aws_security_group" "kube-master-sg" {
   ingress {
     description      = "Ping"
     protocol         = "icmp"
+    from_port        = 0
+    to_port          = 0
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
@@ -71,7 +73,7 @@ resource "aws_instance" "kube-master-01" {
     network_interface_id  = aws_network_interface.kuber-master-01-nic.id
     device_index          = 0
   }
-  
+
   key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
 
   tags = {
