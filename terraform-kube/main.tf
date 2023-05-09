@@ -85,6 +85,11 @@ resource "aws_route_table" "kube-route-01" {
   }
 }
 
+resource "aws_route_table_association" "kube-route-assoc-01" {
+  subnet_id = aws_subnet.kube-subnet-01.id
+  route_table_id = aws_route_table.kube-route-01.id
+}
+
 resource "aws_instance" "kube-master-01" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
