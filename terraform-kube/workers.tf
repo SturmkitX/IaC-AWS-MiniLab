@@ -51,6 +51,8 @@ resource "aws_instance" "kube-worker-01" {
     Name = "kube-worker-01"
     Role = "Kubernetes Worker Node"
   }
+
+  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 
 resource "aws_instance" "kube-worker-02" {
@@ -68,5 +70,7 @@ resource "aws_instance" "kube-worker-02" {
     Name = "kube-worker-02"
     Role = "Kubernetes Worker Node"
   }
+
+  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 

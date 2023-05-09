@@ -64,6 +64,14 @@ resource "aws_network_interface" "kuber-master-01-nic" {
   security_groups = [aws_security_group.kube-master-sg.id]
 }
 
+resource "aws_internet_gateway" "kube-vpc-gw-01" {
+  vpc_id = aws_vpc.kube-vpc-01.id
+
+  tags = {
+    Name = "kube-vpc-gw-01"
+  }
+}
+
 resource "aws_instance" "kube-master-01" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
@@ -79,5 +87,7 @@ resource "aws_instance" "kube-master-01" {
     Name = "kube-master-01"
     Role = "Kubernetes Master Node"
   }
+
+  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 
