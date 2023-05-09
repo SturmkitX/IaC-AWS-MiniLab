@@ -93,7 +93,7 @@ resource "aws_route_table_association" "kube-route-assoc-01" {
 
 resource "aws_instance" "kube-master-01" {
   ami           = "ami-064087b8d355e9051"
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-master-01-nic.id

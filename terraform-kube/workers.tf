@@ -57,7 +57,7 @@ resource "aws_instance" "kube-worker-01" {
 
 resource "aws_instance" "kube-worker-02" {
   ami           = "ami-064087b8d355e9051"
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-worker-02-nic.id
