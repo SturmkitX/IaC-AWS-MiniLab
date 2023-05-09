@@ -46,8 +46,8 @@ resource "aws_security_group" "kube-master-sg" {
   ingress {
     description      = "Ping"
     protocol         = "icmp"
-    from_port        = 0
-    to_port          = 65535
+    from_port        = -1
+    to_port          = -1
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
