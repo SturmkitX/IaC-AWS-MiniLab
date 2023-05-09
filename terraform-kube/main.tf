@@ -76,7 +76,7 @@ resource "aws_route_table" "kube-route-01" {
   vpc_id = aws_vpc.kube-vpc-01.id
 
   route {
-    cidr_block = "172.16.50.0/28"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.kube-vpc-gw-01.id
   }
 
