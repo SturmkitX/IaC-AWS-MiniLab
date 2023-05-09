@@ -1,7 +1,6 @@
 ---
 - hosts: masters
   become: yes
-  become_user: root
 
   tasks:
     - name: initialize the cluster
@@ -19,9 +18,9 @@
     - name: copies admin.conf to user's kube config
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/root/.kube/config
+        dest: /home/ubuntu/.kube/config
         remote_src: yes
-        owner: root
+        owner: ubuntu
 
     - name: install Pod network
       # shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
