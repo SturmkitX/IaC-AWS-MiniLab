@@ -52,6 +52,46 @@ resource "aws_security_group" "kube-master-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description      = "Kubernetes API Server"
+    from_port        = 6443
+    to_port          = 6443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "etcd server client API"
+    from_port        = 2379
+    to_port          = 2380
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "Kubelet API"
+    from_port        = 10250
+    to_port          = 10250
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "Kube-scheduler"
+    from_port        = 10259
+    to_port          = 10259
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "Kube-controller-manager"
+    from_port        = 10257
+    to_port          = 10257
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -93,11 +133,17 @@ resource "aws_route_table_association" "kube-route-assoc-01" {
 
 resource "aws_instance" "kube-master-01" {
   ami           = "ami-064087b8d355e9051"
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
 
   network_interface {
     network_interface_id  = aws_network_interface.kuber-master-01-nic.id
     device_index          = 0
+  }
+
+  root_block_device {
+    delete_on_termination = true
+    volume_type = "gp2"
+    volume_size = 60
   }
 
   key_name      = aws_key_pair.kube-ssh-keypair-01.key_name

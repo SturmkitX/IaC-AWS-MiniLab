@@ -13,12 +13,15 @@ The following need to be covered:
 - [X] Deploy master, worker nodes and SSH public key for access (t3.medium should be minimum)
 
 ### Configuration provisioning (Ansible)
-- [ ] Disable swap, configure hostname, set system clock
-- [ ] Deploy kubeadm
-- [ ] Create Kubernetes nodes and register cluster
+- [X] Disable swap, configure hostname, set system clock
+- [X] Deploy kubeadm
+- [X] Create Kubernetes nodes and register cluster
 
 
 ## Future improvements
-- [ ] Add simple web app
+- [X] Add simple web app and test NodePort connection (it works)
+- [ ] Add ansible task to copy kube-config file from master node
+- [ ] Create an ECR to store a custom image to show the running host
 - [ ] Add ALB resource for load balancing the web application
+- [ ] Create script to execute ansible playbooks (maybe later extend to Jenkins build)
 - [ ] Migrate to Terragrunt for eliminating duplicate code
