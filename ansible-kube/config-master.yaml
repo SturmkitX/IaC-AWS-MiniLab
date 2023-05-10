@@ -22,14 +22,16 @@
         remote_src: yes
         owner: root
 
-    - name: Wait for Kube API Server Port to become active
-      wait_for:
-        port: 6443
-        delay: 10
+    # - name: Wait for Kube API Server Port to become active
+    #   wait_for:
+    #     port: 6443
+    #     delay: 10
 
     - name: install Pod network
       # shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
-      shell: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml
+      shell: |
+            kubectl create -f calico-system-3.25.1/tigera-operator.yaml
+            kubectl create -f calico-system-3.25.1/custom-resources.yaml
       args:
         chdir: $HOME
         
