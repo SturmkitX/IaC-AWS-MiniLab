@@ -45,10 +45,6 @@ spec:
             tcpSocket:
               port: 3000
             timeoutSeconds: 1
-          securityContext:
-            capabilities:
-              add:
-                - NET_RAW
           resources:
             requests:
               cpu: 250m
