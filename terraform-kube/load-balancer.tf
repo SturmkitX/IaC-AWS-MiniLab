@@ -3,16 +3,16 @@ resource "aws_elb" "elb-01" {
 
     listener {
       instance_port     = 30243
-      instance_protocol = "http"
+      instance_protocol = "tcp"
       lb_port           = 80
-      lb_protocol       = "http"
+      lb_protocol       = "tcp"
     }
 
     listener {
       instance_port     = 30246
-      instance_protocol = "https"
+      instance_protocol = "tcp"
       lb_port           = 443
-      lb_protocol       = "https"
+      lb_protocol       = "tcp"
     }
 
     instances       = [ aws_instance.kube-worker-01.id, aws_instance.kube-worker-02.id ]
