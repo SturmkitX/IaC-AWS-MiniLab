@@ -15,7 +15,7 @@ resource "aws_elb" "elb-01" {
       lb_protocol       = "https"
     }
 
-    instances       = [ aws_instance.kube-worker-01, aws_instance.kube-worker-02 ]
+    instances       = [ aws_instance.kube-worker-01.id, aws_instance.kube-worker-02.id ]
     idle_timeout    = 300
     subnets         = [ aws_subnet.kube-subnet-01.id ]
 
