@@ -73,8 +73,8 @@
 
     - name: install kubernetes
       shell: |
-            apt update
-            apt install -y kubelet=1.26.4-00 kubeadm=1.26.4-00 kubectl=1.26.4-00
+            apt update --allow-insecure-repositories
+            apt install -y kubelet=1.26.4-00 kubeadm=1.26.4-00 kubectl=1.26.4-00 --allow-unauthenticated
             apt-mark hold kubelet kubeadm kubectl
 
     # A full system update must be done for Kubernetes 1.27 (maybe)
