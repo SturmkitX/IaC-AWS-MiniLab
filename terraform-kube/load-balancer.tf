@@ -15,6 +15,14 @@ resource "aws_elb" "elb-01" {
       lb_protocol       = "tcp"
     }
 
+    health_check {
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
+      timeout             = 3
+      target              = "HTTP:30243/"
+      interval            = 30
+  }
+
     instances       = [ aws_instance.kube-worker-01.id, aws_instance.kube-worker-02.id ]
     idle_timeout    = 300
     subnets         = [ aws_subnet.kube-subnet-01.id ]
