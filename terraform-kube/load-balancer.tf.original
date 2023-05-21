@@ -60,3 +60,8 @@ resource "aws_security_group" "kube-elb-01-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 }
+
+# output "kube-elb-01-dns" {
+#     description = "Kube ELB DNS Name"
+#     value       = aws_elb.elb-01.dns_name
+# }
