@@ -34,6 +34,70 @@ resource "aws_security_group" "kube-worker-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+  # ingress {
+  #   description      = "calico networking (BGP)"
+  #   from_port        = 179
+  #   to_port          = 179
+  #   protocol         = "tcp"
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
+
+  # ingress {
+  #   description      = "calico networking with VXLAN"
+  #   from_port        = 4789
+  #   to_port          = 4789
+  #   protocol         = "udp"
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
+
+  # ingress {
+  #   description      = "calico networking with Typha"
+  #   from_port        = 5473
+  #   to_port          = 5473
+  #   protocol         = "tcp"
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
+
+  # ingress {
+  #   description      = "calico networking IP-in-IP"
+  #   protocol         = 4
+  #   from_port        = -1
+  #   to_port          = -1
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
+
+  ingress {
+    description      = "flannel overlay udp"
+    protocol         = "udp"
+    from_port        = 8285
+    to_port          = 8285
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "flannel overlay vxlan"
+    protocol         = "udp"
+    from_port        = 8472
+    to_port          = 8472
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "metallb L2 UDP"
+    protocol         = "udp"
+    from_port        = 7946
+    to_port          = 7946
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "metallb L2 TCP"
+    protocol         = "tcp"
+    from_port        = 7946
+    to_port          = 7946
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0

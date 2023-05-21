@@ -20,8 +20,8 @@
 
     - name: modprobe
       shell: |
-              sudo modprobe overlay
-              sudo modprobe br_netfilter
+              modprobe overlay
+              modprobe br_netfilter
 
 
     - name: Set system configurations for Kubernetes networking
@@ -38,27 +38,27 @@
               net.bridge.bridge-nf-call-ip6tables = 1
 
     - name: Apply new settings
-      command: sudo sysctl --system
+      command: sysctl --system
 
     # Added step for containerd to use the systemd cgroup
     - name: install containerd
       shell: |
-            sudo apt-get update && sudo apt-get install -y containerd
-            sudo mkdir -p /etc/containerd
-            sudo containerd config default | sudo tee /etc/containerd/config.toml
-            sudo sed -i 's/\(SystemdCgroup\s*=\s*\).*$/\1true/' /etc/containerd/config.toml
-            sudo systemctl restart containerd
+            apt update && apt install -y containerd
+            mkdir -p /etc/containerd
+            containerd config default | tee /etc/containerd/config.toml
+            sed -i 's/\(SystemdCgroup\s*=\s*\).*$/\1true/' /etc/containerd/config.toml
+            systemctl restart containerd
 
     - name: disable swap
       shell: |
-            sudo swapoff -a
-            sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+            swapoff -a
+            sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
     - name: install and configure dependencies
       shell: |
-            sudo apt-get update && sudo apt-get install -y apt-transport-https curl
-            sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-            echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+            apt update && apt install -y ca-certificates curl
+            curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+            echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 
     # - name: Create kubernetes repo file
     #   file:
@@ -73,9 +73,9 @@
 
     - name: install kubernetes
       shell: |
-            sudo apt-get update
-            sudo apt-get install -y kubelet=1.26.4-00 kubeadm=1.26.4-00 kubectl=1.26.4-00
-            sudo apt-mark hold kubelet kubeadm kubectl
+            apt update --allow-insecure-repositories
+            apt install -y kubelet=1.26.4-00 kubeadm=1.26.4-00 kubectl=1.26.4-00 --allow-unauthenticated
+            apt-mark hold kubelet kubeadm kubectl
 
     # A full system update must be done for Kubernetes 1.27 (maybe)
     # Switch to docker

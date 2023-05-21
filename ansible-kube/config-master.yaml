@@ -3,16 +3,11 @@
   become: yes
 
   tasks:
-    - name: copy calico system files
+    - name: copy flannel files
       copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        src: "flannel/kube-flannel.yml"
+        dest: "/tmp/kube-flannel.yml"
         owner: root
-      with_list:
-        - src: calico-system-3.25.1/tigera-operator.yaml
-          dest: /tmp/tigera-operator.yaml
-        - src: calico-system-3.25.1/custom-resources.yaml
-          dest: /tmp/custom-resources.yaml
 
     - name: initialize the cluster
       shell: kubeadm init --pod-network-cidr=10.244.0.0/16
@@ -41,8 +36,7 @@
     - name: install Pod network
       # shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
       shell: |
-            kubectl create -f /tmp/tigera-operator.yaml
-            kubectl create -f /tmp/custom-resources.yaml
+            kubectl create -f /tmp/kube-flannel.yml
       args:
         chdir: $HOME
         
@@ -55,5 +49,5 @@
         msg: "{{ kubernetes_join_command.stdout }}"
 
     - name: Copy join command to local file.
-      become: yes
+      become: false
       local_action: copy content="{{ kubernetes_join_command.stdout_lines[0] }}" dest="/tmp/kubernetes_join_command" mode=0777
