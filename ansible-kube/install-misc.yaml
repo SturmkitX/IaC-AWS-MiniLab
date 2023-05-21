@@ -1,0 +1,55 @@
+---
+- hosts: masters
+  become: yes
+
+  tasks:
+    - name: copy misc files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+      with_list:
+        - src: prometheus-kube/prometheus.yaml
+          dest: /tmp/prometheus.yaml
+        - src: prometheus-kube/grafana.yaml
+          dest: /tmp/grafana.yaml
+        - src: prometheus-kube/ingress.yaml
+          dest: /tmp/mon-ingress.yaml
+        - src: ingress-controller-1.7.1-baremetal/deploy.yaml
+          dest: /tmp/ingress-controller.yaml
+        - src: ingress.yaml
+          dest: /tmp/nginx-ingress.yaml
+        - src: nginx-deployment.yaml
+          dest: /tmp/nginx-deployment.yaml
+
+    - name: install demo nginx deployment
+      shell: kubectl apply -f /tmp/nginx-deployment.yaml
+      args:
+        chdir: $HOME
+    
+    - name: install prometheus & grafana
+      shell: |
+            kubectl apply -f /tmp/prometheus.yaml
+            kubectl apply -f /tmp/grafana.yaml
+      args:
+        chdir: $HOME
+
+    - name: install ingress controller & ingress
+      shell: |
+            kubectl apply -f /tmp/ingress-controller.yaml
+            kubectl apply -f /tmp/nginx-ingress.yaml
+            kubectl apply -f /tmp/mon-ingress.yaml
+      args:
+        chdir: $HOME
+        
+    - name: Get the token for joining the worker nodes
+      shell: kubeadm token create  --print-join-command
+      register: kubernetes_join_command
+
+    - name: Print cluster Join command
+      debug:
+        msg: "{{ kubernetes_join_command.stdout }}"
+
+    - name: Copy join command to local file.
+      become: false
+      local_action: copy content="{{ kubernetes_join_command.stdout_lines[0] }}" dest="/tmp/kubernetes_join_command" mode=0777
