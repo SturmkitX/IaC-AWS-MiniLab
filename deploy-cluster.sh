@@ -19,4 +19,5 @@ pushd terraform-kube
 bash ./configure-dns.sh
 popd
 
+echo ''
 echo 'Everything should be configured now. Enjoy'
