@@ -140,6 +140,22 @@ resource "aws_security_group" "kube-master-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description      = "metallb L2 UDP"
+    protocol         = "udp"
+    from_port        = 7946
+    to_port          = 7946
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "metallb L2 TCP"
+    protocol         = "tcp"
+    from_port        = 7946
+    to_port          = 7946
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
