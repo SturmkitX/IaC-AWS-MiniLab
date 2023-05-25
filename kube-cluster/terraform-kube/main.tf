@@ -17,7 +17,7 @@ data "terraform_remote_state" "vpc" {
   backend = "local"
 
   config = {
-    path = "../../terraform-common"
+    path = "../../terraform-common/terraform.tfstate"
   }
 }
 
