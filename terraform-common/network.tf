@@ -33,7 +33,7 @@ resource "aws_subnet" "kube-subnet-01" {
 }
 
 resource "aws_internet_gateway" "kube-vpc-gw-01" {
-  vpc_id = data.terraform_remote_state.vpc.outputs.kube_vpc_id
+  vpc_id = aws_vpc.kube-vpc-01.id
 
   tags = {
     Name = "kube-vpc-gw-01"
@@ -41,7 +41,7 @@ resource "aws_internet_gateway" "kube-vpc-gw-01" {
 }
 
 resource "aws_route_table" "kube-route-01" {
-  vpc_id = data.terraform_remote_state.vpc.outputs.kube_vpc_id
+  vpc_id = aws_vpc.kube-vpc-01.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -54,6 +54,6 @@ resource "aws_route_table" "kube-route-01" {
 }
 
 resource "aws_route_table_association" "kube-route-assoc-01" {
-  subnet_id = data.terraform_remote_state.vpc.outputs.kube_subnet_id
+  subnet_id = aws_subnet.kube-subnet-01.id
   route_table_id = aws_route_table.kube-route-01.id
 }
