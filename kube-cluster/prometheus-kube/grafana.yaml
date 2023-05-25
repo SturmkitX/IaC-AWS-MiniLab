@@ -54,8 +54,8 @@ spec:
               name: grafana-pv
       volumes:
         - name: grafana-pv
-          emptyDir:
-            sizeLimit: 30Gi
+          persistentVolumeClaim:
+            claimName: grafana-pvc
 ---
 apiVersion: v1
 kind: Service

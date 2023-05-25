@@ -164,8 +164,8 @@ spec:
             defaultMode: 420
             name: prometheus-config
       - name: prometheus-storage-volume
-        emptyDir:
-            sizeLimit: 30Gi
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
 
 ---
 apiVersion: v1
