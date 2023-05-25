@@ -1,6 +1,6 @@
 resource "aws_security_group" "kube-worker-sg" {
   name    = "kube-worker-sg-01"
-  vpc_id  = aws_vpc.kube-vpc-01.id
+  vpc_id  = data.terraform_remote_state.vpc.outputs.kube_vpc_id
 
   ingress {
     description      = "SSH"
@@ -107,12 +107,12 @@ resource "aws_security_group" "kube-worker-sg" {
 }
 
 resource "aws_network_interface" "kuber-worker-01-nic" {
-  subnet_id = aws_subnet.kube-subnet-01.id
+  subnet_id = data.terraform_remote_state.vpc.outputs.kube_subnet_id
   security_groups = [aws_security_group.kube-worker-sg.id]
 }
 
 resource "aws_network_interface" "kuber-worker-02-nic" {
-  subnet_id = aws_subnet.kube-subnet-01.id
+  subnet_id = data.terraform_remote_state.vpc.outputs.kube_subnet_id
   security_groups = [aws_security_group.kube-worker-sg.id]
 }
 
@@ -131,14 +131,14 @@ resource "aws_instance" "kube-worker-01" {
     volume_size = 60
   }
 
-  key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
+  key_name      = data.terraform_remote_state.vpc.outputs.kube_key_name
 
   tags = {
     Name = "kube-worker-01"
     Role = "Kubernetes Worker Node"
   }
 
-  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
+  # depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 
 resource "aws_instance" "kube-worker-02" {
@@ -156,13 +156,13 @@ resource "aws_instance" "kube-worker-02" {
     volume_size = 60
   }
 
-  key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
+  key_name      = data.terraform_remote_state.vpc.outputs.kube_key_name
 
   tags = {
     Name = "kube-worker-02"
     Role = "Kubernetes Worker Node"
   }
 
-  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
+  # depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 

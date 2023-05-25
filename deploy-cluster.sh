@@ -4,18 +4,18 @@
 # In order to create cluster in one command
 
 # Deploy infrastructure
-pushd terraform-kube
+pushd kube-cluster/terraform-kube
 terraform apply -auto-approve
 bash ./generate.sh
 popd
 
 # Configure cluster
-pushd ansible-kube
+pushd kube-cluster/ansible-kube
 bash ./generate.sh
 popd
 
 # Update DNS
-pushd terraform-kube
+pushd kube-cluster/terraform-kube
 bash ./configure-dns.sh
 popd
 

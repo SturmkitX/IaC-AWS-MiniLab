@@ -6,4 +6,3 @@ resource "aws_key_pair" "kube-ssh-keypair-01" {
     Name  = "kube-ssh-keypair-01"
   }
 }
-
