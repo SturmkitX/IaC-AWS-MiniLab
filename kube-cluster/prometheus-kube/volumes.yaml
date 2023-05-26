@@ -3,7 +3,8 @@ kind: PersistentVolume
 metadata:
   name: prometheus-pv
   namespace: monitoring
-  app: prometheus
+  labels:
+    app: prometheus
 spec:
   capacity:
     storage: 60Gi
@@ -31,7 +32,8 @@ kind: PersistentVolume
 metadata:
   name: grafana-pv
   namespace: monitoring
-  app: grafana
+  labels:
+    app: grafana
 spec:
   capacity:
     storage: 60Gi
