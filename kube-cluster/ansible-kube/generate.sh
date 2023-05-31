@@ -2,8 +2,8 @@
 
 pushd ../../terraform-prerequisites/
 
-PROMETHEUS_VOLID=$(terraform output -raw kube-worker-01-ip)
-GRAFANA_VOLID=$(terraform output -raw kube-worker-02-ip)
+PROMETHEUS_VOLID=$(terraform output -raw prometheus_volume_id)
+GRAFANA_VOLID=$(terraform output -raw grafana_volume_id)
 
 popd
 
