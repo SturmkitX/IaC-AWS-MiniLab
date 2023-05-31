@@ -13,6 +13,11 @@ provider "aws" {
   region = "eu-north-1"
 }
 
+variable "availability_zone" {
+  type = string
+  description = "Subnet AZ (must match prerequisites)"
+}
+
 resource "aws_vpc" "kube-vpc-01" {
   cidr_block            = "172.16.0.0/16"
   enable_dns_hostnames  = true
@@ -26,6 +31,7 @@ resource "aws_subnet" "kube-subnet-01" {
   vpc_id                  = aws_vpc.kube-vpc-01.id
   cidr_block              = "172.16.50.0/24"
   map_public_ip_on_launch = true
+  availability_zone       = var.availability_zone
 
   tags = {
     Name = "kube-subnet-01"
