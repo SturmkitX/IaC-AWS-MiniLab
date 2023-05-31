@@ -14,8 +14,9 @@ provider "aws" {
 }
 
 variable "availability_zone" {
-  type = string
+  type        = string
   description = "Subnet AZ (must match prerequisites)"
+  default     = "eu-north-1b"
 }
 
 resource "aws_vpc" "kube-vpc-01" {
