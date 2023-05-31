@@ -3,6 +3,11 @@
 # A wrapper script to run all helper scripts
 # In order to create cluster in one command
 
+# Deploy common components
+pushd terraform-common
+terraform apply -auto-approve
+popd
+
 # Deploy infrastructure
 pushd kube-cluster/terraform-kube
 terraform apply -auto-approve
