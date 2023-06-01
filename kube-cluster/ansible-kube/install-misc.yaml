@@ -17,6 +17,8 @@
           dest: /tmp/nginx-ingress.yaml
         - src: ../../nginx-deployment.yaml
           dest: /tmp/nginx-deployment.yaml
+        - src: ../../jenkins/kube-credentials.yaml
+          dest: /tmp/kube-jenkins-agents.yaml
 
     - name: install helm
       shell: |
@@ -52,5 +54,11 @@
     - name: install prometheus & grafana
       shell: |
             helm upgrade --install monitoring /tmp/monitoring-chart --set volumeIDs.prometheus="{{ prometheus_volume_id }}" --set volumeIDs.grafana="{{ grafana_volume_id }}"
+      args:
+        chdir: $HOME
+
+    - name: install jenkins agent resources
+      shell: |
+            kubectl apply -f /tmp/kube-jenkins-agents.yaml
       args:
         chdir: $HOME
