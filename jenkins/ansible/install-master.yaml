@@ -29,7 +29,7 @@
 
     - name: install ansible
       shell: |
-            apt install -y python3
-            python3 -m pip install --user ansible
+            apt install -y python3 python3-pip
+            python3 -m pip install ansible
       args:
         chdir: $HOME
