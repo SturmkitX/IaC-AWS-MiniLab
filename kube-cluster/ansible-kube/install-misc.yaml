@@ -25,6 +25,15 @@
             mv linux-amd64/helm /usr/local/bin/helm
       args:
         chdir: $HOME
+
+    - name: install ebs csi driver
+      shell: |
+            kubectl create secret generic aws-secret --namespace kube-system --from-literal key_id="{{ aws_key_id }}"  --from-literal access_key="{{ aws_secret_key }}"
+            helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+            helm repo update
+            helm upgrade --install aws-ebs-csi-driver --namespace kube-system aws-ebs-csi-driver/aws-ebs-csi-driver
+      args:
+        chdir: $HOME
     
     - name: install demo nginx deployment
       shell: kubectl apply -f /tmp/nginx-deployment.yaml
