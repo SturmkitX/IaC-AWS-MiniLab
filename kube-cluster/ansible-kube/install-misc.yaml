@@ -42,8 +42,9 @@
 
     - name: install nginx ingress controller & ingress
       shell: |
+            sleep 15
             kubectl apply -f /tmp/ingress-controller.yaml
-            sleep 30
+            sleep 20
             kubectl apply -f /tmp/nginx-ingress.yaml
       args:
         chdir: $HOME
