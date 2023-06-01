@@ -62,7 +62,7 @@ resource "aws_network_interface" "jenkins-master-nic" {
   security_groups = [aws_security_group.jenkins-master-sg.id]
 }
 
-resource "aws_instance" "kube-master-01" {
+resource "aws_instance" "jenkins-master-01" {
   ami           = "ami-064087b8d355e9051"
   instance_type = "t3.micro"
 
@@ -85,4 +85,14 @@ resource "aws_instance" "kube-master-01" {
   }
 
 #   depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
+}
+
+output "jenkins-master-ip" {
+    description = "Jenkins Master Node Public IP"
+    value       = aws_instance.jenkins-master-01.public_ip
+}
+
+output "jenkins-master-dns" {
+    description = "Jenkins Master Node Public DNS"
+    value       = aws_instance.jenkins-master-01.public_dns
 }

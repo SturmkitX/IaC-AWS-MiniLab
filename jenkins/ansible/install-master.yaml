@@ -1,0 +1,35 @@
+---
+- hosts: masters
+  become: yes
+
+  tasks:
+    - name: install jdk 11
+      shell: |
+            apt update
+            apt install -y openjdk-11-jdk
+      args:
+        chdir: $HOME
+
+    - name: install jenkins server
+      shell: |
+            curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+            echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+            apt update
+            apt install -y jenkins
+      args:
+        chdir: $HOME
+
+    - name: install terraform
+      shell: |
+            wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+            apt update && apt install -y terraform
+      args:
+        chdir: $HOME
+
+    - name: install ansible
+      shell: |
+            apt install -y python3
+            python3 -m pip install --user ansible
+      args:
+        chdir: $HOME
