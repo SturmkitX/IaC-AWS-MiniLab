@@ -8,7 +8,7 @@ pushd terraform-common
 terraform destroy -auto-approve
 popd
 
-if [[ $DELETE_PREREQ = 'yes' ]]
+if [[ "$DELETE_PREREQ" = 'yes' ]]
 then
     pushd terraform-prerequisites
     terraform destroy -auto-approve

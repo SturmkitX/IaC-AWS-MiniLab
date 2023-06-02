@@ -3,6 +3,12 @@
 # A wrapper script to run all helper scripts
 # In order to create cluster in one command
 
+# Deploy prerequisites
+pushd terraform-prerequisites
+terraform init
+terraform apply -auto-approve
+popd
+
 # Deploy common components
 pushd terraform-common
 terraform init
