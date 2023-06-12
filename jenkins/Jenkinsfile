@@ -1,0 +1,16 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'automation-persistence', url: 'https://github.com/SturmkitX/IaC-AWS-MiniLab.git'
+            }
+        }
+        stage('Deploy cluster') {
+            steps {
+                sh 'bash ./deploy-cluster.sh'
+            }
+        }
+    }
+}

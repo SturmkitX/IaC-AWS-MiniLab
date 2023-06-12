@@ -13,28 +13,17 @@ provider "aws" {
   region = "eu-north-1"
 }
 
-resource "aws_vpc" "kube-vpc-01" {
-  cidr_block            = "172.16.0.0/16"
-  enable_dns_hostnames  = true
+data "terraform_remote_state" "vpc" {
+  backend = "local"
 
-  tags = {
-    Name = "kube-vpc-01"
-  }
-}
-
-resource "aws_subnet" "kube-subnet-01" {
-  vpc_id                  = aws_vpc.kube-vpc-01.id
-  cidr_block              = "172.16.50.0/28"
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "kube-subnet-01"
+  config = {
+    path = "../../terraform-common/terraform.tfstate"
   }
 }
 
 resource "aws_security_group" "kube-master-sg" {
   name    = "kube-master-sg-01"
-  vpc_id  = aws_vpc.kube-vpc-01.id
+  vpc_id  = data.terraform_remote_state.vpc.outputs.kube_vpc_id
 
   ingress {
     description      = "SSH"
@@ -165,34 +154,8 @@ resource "aws_security_group" "kube-master-sg" {
 }
 
 resource "aws_network_interface" "kuber-master-01-nic" {
-  subnet_id = aws_subnet.kube-subnet-01.id
+  subnet_id = data.terraform_remote_state.vpc.outputs.kube_subnet_id
   security_groups = [aws_security_group.kube-master-sg.id]
-}
-
-resource "aws_internet_gateway" "kube-vpc-gw-01" {
-  vpc_id = aws_vpc.kube-vpc-01.id
-
-  tags = {
-    Name = "kube-vpc-gw-01"
-  }
-}
-
-resource "aws_route_table" "kube-route-01" {
-  vpc_id = aws_vpc.kube-vpc-01.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.kube-vpc-gw-01.id
-  }
-
-  tags = {
-    Name = "kube-route-table-01"
-  }
-}
-
-resource "aws_route_table_association" "kube-route-assoc-01" {
-  subnet_id = aws_subnet.kube-subnet-01.id
-  route_table_id = aws_route_table.kube-route-01.id
 }
 
 resource "aws_instance" "kube-master-01" {
@@ -210,13 +173,13 @@ resource "aws_instance" "kube-master-01" {
     volume_size = 60
   }
 
-  key_name      = aws_key_pair.kube-ssh-keypair-01.key_name
+  key_name      = data.terraform_remote_state.vpc.outputs.kube_key_name
 
   tags = {
     Name = "kube-master-01"
     Role = "Kubernetes Master Node"
   }
 
-  depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
+  # depends_on = [ aws_internet_gateway.kube-vpc-gw-01 ]
 }
 

@@ -25,7 +25,7 @@ resource "aws_elb" "elb-01" {
 
   instances                   = [ aws_instance.kube-worker-01.id, aws_instance.kube-worker-02.id ]
   idle_timeout                = 300
-  subnets                     = [ aws_subnet.kube-subnet-01.id ]
+  subnets                     = [ data.terraform_remote_state.vpc.outputs.kube_subnet_id ]
   security_groups             = [ aws_security_group.kube-elb-01-sg.id ]
   connection_draining         = true
   connection_draining_timeout = 400
@@ -37,7 +37,7 @@ resource "aws_elb" "elb-01" {
 
 resource "aws_security_group" "kube-elb-01-sg" {
   name    = "kube-elb-01-sg"
-  vpc_id  = aws_vpc.kube-vpc-01.id
+  vpc_id  = data.terraform_remote_state.vpc.outputs.kube_vpc_id
 
   ingress {
     description      = "HTTP"

@@ -1,0 +1,64 @@
+---
+- hosts: masters
+  become: yes
+
+  tasks:
+    - name: copy misc files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+      with_list:
+        - src: ../prometheus-kube/monitoring-chart
+          dest: /tmp/
+        - src: ingress-controller-1.7.1-baremetal/deploy.yaml
+          dest: /tmp/ingress-controller.yaml
+        - src: ../../ingress.yaml
+          dest: /tmp/nginx-ingress.yaml
+        - src: ../../nginx-deployment.yaml
+          dest: /tmp/nginx-deployment.yaml
+        - src: ../../jenkins/kube-credentials.yaml
+          dest: /tmp/kube-jenkins-agents.yaml
+
+    - name: install helm
+      shell: |
+            wget https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+            tar -zxvf helm-v3.12.0-linux-amd64.tar.gz
+            mv linux-amd64/helm /usr/local/bin/helm
+      args:
+        chdir: $HOME
+
+    - name: install ebs csi driver
+      shell: |
+            kubectl create secret generic aws-secret --namespace kube-system --from-literal key_id="{{ aws_key_id }}"  --from-literal access_key="{{ aws_secret_key }}"
+            helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+            helm repo update
+            helm upgrade --install aws-ebs-csi-driver --namespace kube-system aws-ebs-csi-driver/aws-ebs-csi-driver
+      args:
+        chdir: $HOME
+    
+    - name: install demo nginx deployment
+      shell: kubectl apply -f /tmp/nginx-deployment.yaml
+      args:
+        chdir: $HOME
+
+    - name: install nginx ingress controller & ingress
+      shell: |
+            sleep 15
+            kubectl apply -f /tmp/ingress-controller.yaml
+            sleep 20
+            kubectl apply -f /tmp/nginx-ingress.yaml
+      args:
+        chdir: $HOME
+
+    - name: install prometheus & grafana
+      shell: |
+            helm upgrade --install monitoring /tmp/monitoring-chart --set volumeIDs.prometheus="{{ prometheus_volume_id }}" --set volumeIDs.grafana="{{ grafana_volume_id }}"
+      args:
+        chdir: $HOME
+
+    - name: install jenkins agent resources
+      shell: |
+            kubectl apply -f /tmp/kube-jenkins-agents.yaml
+      args:
+        chdir: $HOME

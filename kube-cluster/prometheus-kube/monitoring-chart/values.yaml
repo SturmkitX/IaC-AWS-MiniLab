@@ -1,0 +1,5 @@
+volumeIDs:
+  prometheus: abc
+  grafana: abc
+
+namespace: monitoring

@@ -1,6 +1,0 @@
-[masters]
-master ansible_host=16.16.202.75 ansible_user=ubuntu
-
-[workers]
-worker1 ansible_host=13.48.1.201 ansible_user=ubuntu
-worker2 ansible_host=16.16.184.224 ansible_user=ubuntu
