@@ -35,7 +35,7 @@ The following need to be covered:
 - [X] Create script to execute ansible playbooks
 - [X] Add script to execute all steps necessary to create a working cluster with Ingress (see deploy-cluster.sh)
 - [ ] Add ansible task to copy kube-config file from master node & edit for external use
-- [ ] Add persistent storage for pods
+- [X] Add persistent storage for pods
 - [ ] Add support for LoadBalancer resources (see the [MetalLB project](https://metallb.universe.tf/), then go to Installation page; in this case, nginx-ingress-controller can be switched to the cloud variant, but it should not interfere with the baremetal implementation which uses NodePort)
 - [ ] Create an ECR to store a custom image to show the running host
 - [ ] Migrate to Terragrunt for eliminating duplicate code
