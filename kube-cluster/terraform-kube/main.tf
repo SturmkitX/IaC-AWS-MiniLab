@@ -89,13 +89,13 @@ resource "aws_security_group" "kube-master-sg" {
   #   cidr_blocks      = ["0.0.0.0/0"]
   # }
 
-  # ingress {
-  #   description      = "calico networking with VXLAN"
-  #   from_port        = 4789
-  #   to_port          = 4789
-  #   protocol         = "udp"
-  #   cidr_blocks      = ["0.0.0.0/0"]
-  # }
+  ingress {
+    description      = "calico networking with VXLAN"
+    from_port        = 4789
+    to_port          = 4789
+    protocol         = "udp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 
   # ingress {
   #   description      = "calico networking with Typha"
@@ -113,37 +113,37 @@ resource "aws_security_group" "kube-master-sg" {
   #   cidr_blocks      = ["0.0.0.0/0"]
   # }
 
-  ingress {
-    description      = "flannel overlay udp"
-    protocol         = "udp"
-    from_port        = 8285
-    to_port          = 8285
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description      = "flannel overlay udp"
+  #   protocol         = "udp"
+  #   from_port        = 8285
+  #   to_port          = 8285
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
 
-  ingress {
-    description      = "flannel overlay vxlan"
-    protocol         = "udp"
-    from_port        = 8472
-    to_port          = 8472
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description      = "flannel overlay vxlan"
+  #   protocol         = "udp"
+  #   from_port        = 8472
+  #   to_port          = 8472
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
 
-  ingress {
-    description      = "metallb L2 UDP"
-    protocol         = "udp"
-    from_port        = 7946
-    to_port          = 7946
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description      = "metallb L2 UDP"
+  #   protocol         = "udp"
+  #   from_port        = 7946
+  #   to_port          = 7946
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
 
-  ingress {
-    description      = "metallb L2 TCP"
-    protocol         = "tcp"
-    from_port        = 7946
-    to_port          = 7946
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description      = "metallb L2 TCP"
+  #   protocol         = "tcp"
+  #   from_port        = 7946
+  #   to_port          = 7946
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
 
   egress {
     from_port        = 0
