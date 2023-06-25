@@ -20,7 +20,7 @@
         - src: ../../nginx-deployment.yaml
           dest: /tmp/nginx-deployment.yaml
         - src: ../../jenkins/kube-credentials.yaml
-          dest: /tmp/kube-jenkins-agents.yaml
+          dest: /tmp/jenkins-credentials.yaml
 
     - name: install helm
       shell: |
@@ -62,6 +62,6 @@
 
     - name: install jenkins agent resources
       shell: |
-            kubectl apply -f /tmp/kube-jenkins-agents.yaml
+            kubectl apply -f /tmp/jenkins-credentials.yaml
       args:
         chdir: $HOME

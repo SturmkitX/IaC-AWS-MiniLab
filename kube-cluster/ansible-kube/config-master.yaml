@@ -3,10 +3,10 @@
   become: yes
 
   tasks:
-    - name: copy flannel files
+    - name: copy calico files
       copy:
-        src: "flannel/kube-flannel.yml"
-        dest: "/tmp/kube-flannel.yml"
+        src: "calico-system-manifest-3.26.1/calico.yaml"    # Manifest version without Typha (under 50 nodes)
+        dest: "/tmp/calico.yaml"
         owner: root
 
     - name: initialize the cluster
@@ -37,7 +37,8 @@
     - name: install Pod network
       # shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
       shell: |
-            kubectl create -f /tmp/kube-flannel.yml
+            kubectl apply -f /tmp/calico.yaml
+            sleep 15
       args:
         chdir: $HOME
         
