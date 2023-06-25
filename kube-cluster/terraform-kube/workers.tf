@@ -34,13 +34,13 @@ resource "aws_security_group" "kube-worker-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
-  # ingress {
-  #   description      = "calico networking (BGP)"
-  #   from_port        = 179
-  #   to_port          = 179
-  #   protocol         = "tcp"
-  #   cidr_blocks      = ["0.0.0.0/0"]
-  # }
+  ingress {
+    description      = "calico networking (BGP)"
+    from_port        = 179
+    to_port          = 179
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 
   ingress {
     description      = "calico networking with VXLAN"
